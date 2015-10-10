@@ -41,7 +41,7 @@ public class Loans {
 		return result;
 	}
 	
-	public static ArrayList<JSONObject> queryLoan(int timeToLive){
+	public static ArrayList<JSONObject> queryLoan(long timeToLive){
 		ArrayList<JSONObject> loansToBuy = new ArrayList<JSONObject>();
 		JSONArray currentLoans = getCurrentLoans();
 		int loansNum = currentLoans.length();
@@ -90,7 +90,6 @@ public class Loans {
 	}
 	
 	public static void main(String[] args) {
-//		tradeLoan(2160000);
-		queryLoan(2160000);
+		
 	}
 }
