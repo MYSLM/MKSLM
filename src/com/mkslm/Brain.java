@@ -11,14 +11,14 @@ public class Brain {
 			System.out.println();
 			if(newInf!=null){
 			String cur = newInf.currencyPair.substring(0, 3);
-			// »ñÈ¡µ±Ç°Óà¶î
+			// ï¿½ï¿½È¡ï¿½ï¿½Ç°ï¿½ï¿½ï¿½
 			try {
 				AccountInf account = BalanceRetriever.getBalanceAcct();
-				// Âô³öµ±Ç°»õ±ÒÖÁcsc
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½csc
 				if (newInf.impact < 0) {
 					Trader.trade(cur, "CSC", account.getValue(cur));
 				}
-				// ËùÓÐÆäËû»õ±ÒÂòÈëµ±Ç°»õ±Ò
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ëµ±Ç°ï¿½ï¿½ï¿½ï¿½
 				else {
 					if (cur.equals("AUD")) {
 						Trader.trade("CSC", "AUD", account.csc);
@@ -43,7 +43,8 @@ public class Brain {
 					}
 					// sleep
 					long time = newInf.valueTime + newInf.windowMinutes * 60 * 1000 - System.currentTimeMillis() + 5000;
-					Thread.sleep(time);
+					if(time>0)
+						Thread.sleep(time);
 				}
 			} catch (Exception e) {
 				System.out.println(e);
