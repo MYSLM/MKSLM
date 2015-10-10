@@ -41,7 +41,7 @@ public class Loans {
 		return result;
 	}
 	
-	public static void tradeLoan(int timeToLive){
+	public static ArrayList<JSONObject> queryLoan(int timeToLive){
 		ArrayList<JSONObject> loansToBuy = new ArrayList<JSONObject>();
 		JSONArray currentLoans = getCurrentLoans();
 		int loansNum = currentLoans.length();
@@ -58,10 +58,14 @@ public class Loans {
 		
 		Comparator<JSONObject> cmp = new Comparator<JSONObject>() {
 			public int compare(JSONObject json1, JSONObject json2){
-				int json1Term = json1.getInt("termInMinutes");
-				int json2Term = json2.getInt("termInMinutes");
+				int json1Inte = json1.getInt("interestRatePercent");
+				int json2Inte = json2.getInt("interestRatePercent");
+				int compare = json2Inte - json1Inte;
 				
-				return json1Term - json2Term;
+				if (compare == 0) {
+					compare = json1.getInt("termInMinutes") - json2.getInt("termInMinutes");
+				} 
+				return compare;
 			}
 		};
 		System.out.println(loansToBuy.toString());
@@ -71,12 +75,13 @@ public class Loans {
 		System.out.println(loansToBuy.toString());
 		
 		// Buy the shortest loan
-		if (loansToBuy.size() > 0) {
-			System.out.println(loansToBuy.get(0).toString());
-			buyLoans(loansToBuy.get(0).getString("id"));
-		} else {
-			System.out.println("No loan to buy");
-		}
+//		if (loansToBuy.size() > 0) {
+//			System.out.println(loansToBuy.get(0).toString());
+//			buyLoans(loansToBuy.get(0).getString("id"));
+//		} else {
+//			System.out.println("No loan to buy");
+//		}
+		return loansToBuy;
 		
 		// Buy all the loans in loanToBuy
 //		for (JSONObject object : loansToBuy) {
@@ -85,6 +90,7 @@ public class Loans {
 	}
 	
 	public static void main(String[] args) {
-		tradeLoan(2160000);
+//		tradeLoan(2160000);
+		queryLoan(2160000);
 	}
 }
