@@ -1,11 +1,16 @@
 package com.mkslm;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Loans {
+	private static int MAXTERM = 40;
+	private static int MININTERESTRATE = 2;
+	
 	public static JSONArray getCurrentLoans() {
 		JSONObject loanInfo = null;
 		try {
@@ -36,9 +41,50 @@ public class Loans {
 		return result;
 	}
 	
-	public static void main(String[] args) {
-		System.out.print(getCurrentLoans().toString());
-
+	public static void tradeLoan(int timeToLive){
+		ArrayList<JSONObject> loansToBuy = new ArrayList<JSONObject>();
+		JSONArray currentLoans = getCurrentLoans();
+		int loansNum = currentLoans.length();
+		
+//		System.out.println(loansNum);
+		
+		for (int i = 0; i < loansNum; i++) {
+			JSONObject loan = currentLoans.getJSONObject(i);
+			if (loan.getDouble("termInMinutes") < ((double) timeToLive / 60000)) {
+				loansToBuy.add(loan);
+				System.out.println(loan.toString());
+			}
+		}
+		
+		Comparator<JSONObject> cmp = new Comparator<JSONObject>() {
+			public int compare(JSONObject json1, JSONObject json2){
+				int json1Term = json1.getInt("termInMinutes");
+				int json2Term = json2.getInt("termInMinutes");
+				
+				return json1Term - json2Term;
+			}
+		};
+		System.out.println(loansToBuy.toString());
+		
+		loansToBuy.sort(cmp);
+		
+		System.out.println(loansToBuy.toString());
+		
+		// Buy the shortest loan
+		if (loansToBuy.size() > 0) {
+			System.out.println(loansToBuy.get(0).toString());
+			buyLoans(loansToBuy.get(0).getString("id"));
+		} else {
+			System.out.println("No loan to buy");
+		}
+		
+		// Buy all the loans in loanToBuy
+//		for (JSONObject object : loansToBuy) {
+//			buyLoans(object.getString("id"));
+//		}
 	}
-
+	
+	public static void main(String[] args) {
+		tradeLoan(2160000);
+	}
 }
