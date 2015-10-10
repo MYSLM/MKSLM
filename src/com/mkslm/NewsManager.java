@@ -14,7 +14,7 @@ public class NewsManager {
 		updateNews();
 	}
 	private NewsManager(){}
-	public NewsInf getNextNews() {
+	public static NewsInf getNextNews() {
 		Collections.sort(pool, new Comparator<NewsInf>() {
 
 			@Override
