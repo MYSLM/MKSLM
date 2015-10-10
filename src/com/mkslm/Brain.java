@@ -1,21 +1,31 @@
 package com.mkslm;
 
-public class Brain {
+import java.util.List;
 
+import org.json.JSONObject;
+
+public class Brain {
+	private static long expireTime=System.currentTimeMillis()+30*60*1000;
 	public static void main(String[] args) {
 		while (true) {
+
 			NewsInf newInf = NewsManager.getNextNews();
-			System.out.println();
+			
 			if (newInf != null) {
 				String cur = newInf.currencyPair.substring(0, 3);
-				// ��ȡ��ǰ���
 				try {
 					AccountInf account = BalanceRetriever.getBalanceAcct();
-					// ������ǰ������csc
 					if (newInf.impact < 0) {
 						Trader.trade(cur, "CSC", account.getValue(cur));
+						List<JSONObject> loans=Loans.queryLoan(expireTime-System.currentTimeMillis());
+						for(JSONObject o:loans) {
+							if(BalanceRetriever.getBalanceAcct().csc>o.getInt("amount")) {
+								Loans.buyLoans(o.getString("id"));
+							}
+							else
+								break;
+						}
 					}
-					// ��������������뵱ǰ����
 					else {
 						if (cur.equals("AUD")) {
 							Trader.trade("CSC", "AUD", account.csc);
@@ -38,6 +48,7 @@ public class Brain {
 							Trader.trade("USD", "EUR", account.usd);
 							Trader.trade("SGD", "EUR", account.sgd);
 						}
+						
 						// sleep
 						long time = newInf.valueTime + newInf.windowMinutes
 								* 60 * 1000 - System.currentTimeMillis() + 5000;
@@ -52,7 +63,6 @@ public class Brain {
 				try {
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

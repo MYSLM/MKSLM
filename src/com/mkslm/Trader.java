@@ -86,8 +86,6 @@ public class Trader {
 		confirmTrade(preTrade(use, buy, amount));
 	}
 	public static void main(String[] args) {
-		String id=Trader.preTrade("CSC","AUD", 1);
-		System.out.println(id);
-		Trader.confirmTrade(id);
+		Trader.trade("SGD", "CSC", 35913);
 	}
 }
