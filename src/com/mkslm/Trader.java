@@ -3,12 +3,10 @@ import java.io.IOException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
@@ -36,12 +34,7 @@ public class Trader {
                 HttpEntity entity = response.getEntity();
                 JSONObject result=new JSONObject(EntityUtils.toString(entity, "UTF-8"));
                 String quoteId=result.getJSONObject("quoteResponse").getString("quoteId");
-                return quoteId;
-//                if (entity != null) {  
-//                    System.out.println("--------------------------------------");  
-//                    System.out.println("Response content: " + EntityUtils.toString(entity, "UTF-8"));  
-//                    System.out.println("--------------------------------------");  
-//                }  
+                return quoteId; 
             } finally {  
                 response.close();  
             }  

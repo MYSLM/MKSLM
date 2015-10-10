@@ -44,6 +44,8 @@ public class NewsManager {
 						if (news.valueTime + news.windowMinutes * 60000 < System
 								.currentTimeMillis())
 							pool.remove(news);
+						else
+							break;
 					}
 					List<NewsInf> retrieved = retriever.getNews();
 					for (NewsInf news : retrieved) {
@@ -55,13 +57,12 @@ public class NewsManager {
 							}
 						}
 						if (!hasNews) {
-							System.out.println("adding news");
 							pool.add(news);
 						}
 
 					}
-					for (NewsInf news : pool)
-						System.out.println(news);
+//					for (NewsInf news : pool)
+//						System.out.println(news);
 					try {
 						Thread.sleep(20000);
 					} catch (InterruptedException e) {
