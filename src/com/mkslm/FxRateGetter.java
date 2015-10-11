@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class FxRateGetter {
 	public static double getFxRate(String use, String buy) throws Exception {
-		URL fxRate = new URL("http://192.168.2.5:2015/fx/" + use + buy);
+		URL fxRate = new URL(Constant.FXRATEURL + use + buy);
 		URLConnection link = fxRate.openConnection();
 		BufferedReader in = new BufferedReader(new InputStreamReader(link.getInputStream()));
 		String inputLine;

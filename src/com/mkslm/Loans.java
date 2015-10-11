@@ -8,8 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Loans {
-	private static int MAXTERM = 40;
-	private static int MININTERESTRATE = 2;
 	
 	public static JSONArray getCurrentLoans() {
 		JSONObject loanInfo = null;
@@ -68,11 +66,11 @@ public class Loans {
 				return compare;
 			}
 		};
-		System.out.println(loansToBuy.toString());
+//		System.out.println(loansToBuy.toString());
 		
 		loansToBuy.sort(cmp);
 		
-		System.out.println(loansToBuy.toString());
+//		System.out.println(loansToBuy.toString());
 		
 		// Buy the shortest loan
 //		if (loansToBuy.size() > 0) {
@@ -90,6 +88,16 @@ public class Loans {
 	}
 	
 	public static void main(String[] args) {
+		JSONArray temp = getCurrentLoans();
+		for (int i = 0; i < temp.length(); i++) {
+			JSONObject loan = temp.getJSONObject(i);
+			if (loan.getInt("termInMinutes") < 45 && loan.getInt("interestRatePercent") >= 3) {
+				if(buyLoans(loan.getString("id"))){
+					System.out.println(loan.getString("id"));
+					break;
+				}
+			}
+		}
 		
 	}
 }
